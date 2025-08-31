@@ -1,0 +1,143 @@
+name: Dependency Updates
+
+on:
+  schedule:
+    # Check for dependency updates every Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  update-php-dependencies:
+    name: Update PHP Dependencies
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          tools: composer:v2
+
+      - name: Update Composer dependencies
+        run: composer update --no-interaction
+
+      - name: Run tests after update
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          touch database/database.sqlite
+          php artisan migrate --force
+          ./vendor/bin/pest
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: update PHP dependencies'
+          title: 'Update PHP Dependencies'
+          body: |
+            This PR updates PHP dependencies to their latest versions.
+            
+            ## Changes
+            - Updated Composer dependencies
+            - All tests pass after update
+            
+            Please review the changes and merge if everything looks good.
+          branch: dependency-updates/php
+          delete-branch: true
+
+  update-node-dependencies:
+    name: Update Node Dependencies
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Update npm dependencies
+        run: |
+          npm update
+          npm audit fix --force
+
+      - name: Build assets
+        run: npm run build
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: update Node.js dependencies'
+          title: 'Update Node.js Dependencies'
+          body: |
+            This PR updates Node.js dependencies to their latest versions.
+            
+            ## Changes
+            - Updated npm dependencies
+            - Fixed security vulnerabilities
+            - Assets build successfully
+            
+            Please review the changes and merge if everything looks good.
+          branch: dependency-updates/node
+          delete-branch: true
+
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          tools: composer:v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          composer install --no-interaction
+          npm ci
+
+      - name: Run PHP security audit
+        run: composer audit
+
+      - name: Run npm security audit
+        run: npm audit --audit-level=moderate
+
+      - name: Create issue if vulnerabilities found
+        if: failure()
+        uses: dacbd/create-issue-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: 'Security Vulnerabilities Found'
+          body: |
+            🚨 Security vulnerabilities were found in the dependencies.
+            
+            Please check the dependency audit logs and update the affected packages.
+            
+            **Action Required:**
+            1. Review the audit results
+            2. Update vulnerable dependencies
+            3. Test the application thoroughly
+            4. Close this issue once resolved
+          labels: 'security,high-priority'
