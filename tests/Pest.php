@@ -24,10 +24,10 @@ pest()->extend(Tests\TestCase::class)
 |
 */
 
-// Enable parallel execution by default
-if (! defined('PEST_PARALLEL')) {
-    define('PEST_PARALLEL', true);
-}
+// Disable parallel execution for CI/CD compatibility
+// if (! defined('PEST_PARALLEL')) {
+//     define('PEST_PARALLEL', true);
+// }
 
 /*
 |--------------------------------------------------------------------------
