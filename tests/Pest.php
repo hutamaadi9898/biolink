@@ -56,7 +56,7 @@ expect()->extend('toBeOne', function () {
 */
 
 function something()
-{
+{ 
     // ..
 }
 
