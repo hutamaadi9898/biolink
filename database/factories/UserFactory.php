@@ -1,0 +1,72 @@
+<?php
+
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ */
+class UserFactory extends Factory
+{
+    /**
+     * The current password being used by the factory.
+     */
+    protected static ?string $password;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        $name = fake()->name();
+        
+        return [
+            'name' => $name,
+            'email' => fake()->unique()->safeEmail(),
+            'email_verified_at' => now(),
+            'password' => static::$password ??= Hash::make('password'),
+            'remember_token' => Str::random(10),
+            'username' => fake()->unique()->userName(),
+            'slug' => Str::slug($name) . '-' . fake()->unique()->numberBetween(1, 9999),
+            'role' => fake()->randomElement(['free', 'pro']),
+            'pro_expires_at' => fake()->boolean(30) ? fake()->dateTimeBetween('now', '+1 year') : null,
+        ];
+    }
+
+    /**
+     * Indicate that the model's email address should be unverified.
+     */
+    public function unverified(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the user has a pro subscription.
+     */
+    public function pro(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'pro',
+            'pro_expires_at' => fake()->dateTimeBetween('+1 month', '+1 year'),
+        ]);
+    }
+
+    /**
+     * Indicate that the user has a free subscription.
+     */
+    public function free(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'free',
+            'pro_expires_at' => null,
+        ]);
+    }
+}

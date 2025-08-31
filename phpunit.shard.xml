@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+>
+    <testsuites>
+        <!-- Unit Test Shard -->
+        <testsuite name="Unit-Shard">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        
+        <!-- Feature Test Shard 1 - Auth & User Management -->
+        <testsuite name="Feature-Auth-Shard">
+            <directory>tests/Feature/Auth</directory>
+            <directory>tests/Feature/Settings</directory>
+            <file>tests/Feature/UserModelTest.php</file>
+        </testsuite>
+        
+        <!-- Feature Test Shard 2 - Core Functionality -->
+        <testsuite name="Feature-Core-Shard">
+            <file>tests/Feature/LinkManagementTest.php</file>
+            <file>tests/Feature/LinkModelTest.php</file>
+            <file>tests/Feature/AnalyticsTest.php</file>
+            <file>tests/Feature/ThemesTest.php</file>
+        </testsuite>
+        
+        <!-- Feature Test Shard 3 - Dashboard & Profile -->
+        <testsuite name="Feature-Dashboard-Shard">
+            <file>tests/Feature/DashboardTest.php</file>
+            <file>tests/Feature/ProfileTest.php</file>
+            <file>tests/Feature/PortfolioTest.php</file>
+            <file>tests/Feature/ExampleTest.php</file>
+        </testsuite>
+        
+        <!-- Browser Test Shard - Smoke Tests -->
+        <testsuite name="Browser-Smoke-Shard">
+            <directory>tests/Browser</directory>
+        </testsuite>
+    </testsuites>
+    
+    <source>
+        <include>
+            <directory>app</directory>
+        </include>
+    </source>
+    
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="APP_MAINTENANCE_DRIVER" value="file"/>
+        <env name="BCRYPT_ROUNDS" value="4"/>
+        <env name="CACHE_STORE" value="array"/>
+        <env name="DB_CONNECTION" value="pgsql"/>
+        <env name="DB_HOST" value="127.0.0.1"/>
+        <env name="DB_PORT" value="5432"/>
+        <env name="DB_DATABASE" value="biolink_test"/>
+        <env name="DB_USERNAME" value="postgres"/>
+        <env name="DB_PASSWORD" value="postgres"/>
+        <env name="LOG_CHANNEL" value="single"/>
+        <env name="MAIL_MAILER" value="array"/>
+        <env name="PULSE_ENABLED" value="false"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="TELESCOPE_ENABLED" value="false"/>
+        <env name="VITE_TEST_MODE" value="true"/>
+    </php>
+</phpunit>
