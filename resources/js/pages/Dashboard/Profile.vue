@@ -89,7 +89,7 @@
     </AppLayout>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { useForm } from '@inertiajs/vue3';
 
