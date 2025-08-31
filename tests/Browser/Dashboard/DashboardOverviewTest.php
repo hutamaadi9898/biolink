@@ -16,7 +16,7 @@ describe('Dashboard Overview', function () {
         $page = visit('/dashboard');
 
         $page->assertSee('Dashboard')
-            ->assertSee('Halo, ' . explode(' ', $this->user->name)[0] . '!')
+            ->assertSee('Halo, '.explode(' ', $this->user->name)[0].'!')
             ->assertSee('Selamat datang kembali di dashboard Anda')
             ->assertNoJavascriptErrors();
     });
@@ -46,7 +46,7 @@ describe('Dashboard Overview', function () {
         // Navigate to a logout page or test logout functionality
         $page->assertSee('Dashboard')
             ->assertNoJavascriptErrors();
-        
+
         // For now, just verify the dashboard loads and test actual logout later
         expect(auth()->check())->toBeTrue();
     });

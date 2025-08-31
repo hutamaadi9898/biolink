@@ -88,7 +88,7 @@ class LinkController extends Controller
             if ($link->image) {
                 Storage::disk('public')->delete($link->image);
             }
-            
+
             $path = $request->file('image')->store('links', 'public');
             $validated['image'] = $path;
         }
@@ -123,7 +123,7 @@ class LinkController extends Controller
             abort(403);
         }
 
-        $link->update(['is_active' => !$link->is_active]);
+        $link->update(['is_active' => ! $link->is_active]);
 
         return back()->with('success', 'Status link berhasil diubah!');
     }

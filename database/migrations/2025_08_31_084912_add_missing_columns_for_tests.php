@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('link_id')->references('id')->on('links')->onDelete('cascade');
             $table->index('link_id');
         });
-        
+
         // Add clicks column to links table
         Schema::table('links', function (Blueprint $table) {
             $table->unsignedInteger('clicks')->default(0)->after('click_count');
@@ -33,7 +33,7 @@ return new class extends Migration
             $table->dropForeign(['link_id']);
             $table->dropColumn('link_id');
         });
-        
+
         Schema::table('links', function (Blueprint $table) {
             $table->dropColumn('clicks');
         });

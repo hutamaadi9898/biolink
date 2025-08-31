@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\Analytics;
+use Illuminate\Console\Command;
 
 class ProcessAnalyticsBatch extends Command
 {
@@ -27,15 +27,15 @@ class ProcessAnalyticsBatch extends Command
     public function handle()
     {
         $this->info('Processing analytics batch...');
-        
+
         $processed = Analytics::processBatchInsert();
-        
+
         if ($processed > 0) {
             $this->info("Successfully processed {$processed} analytics events.");
         } else {
             $this->info('No analytics events to process.');
         }
-        
+
         return Command::SUCCESS;
     }
 }

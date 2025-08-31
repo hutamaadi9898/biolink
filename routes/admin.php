@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\UsersController;
-use App\Http\Controllers\Admin\LinksController;
 use App\Http\Controllers\Admin\AnalyticsController;
+use App\Http\Controllers\Admin\LinksController;
+use App\Http\Controllers\Admin\UsersController;
 use Illuminate\Support\Facades\Route;
 
 // Stop impersonating (accessible to impersonated users, only auth required)
@@ -11,11 +11,11 @@ Route::middleware(['auth'])->post('/admin/stop-impersonating', [UsersController:
 
 // Admin routes - protected by auth and admin middleware
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    
+
     // Dashboard
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
     Route::get('/system', [AdminController::class, 'system'])->name('system');
-    
+
     // Users management
     Route::prefix('users')->name('users.')->group(function () {
         Route::get('/', [UsersController::class, 'index'])->name('index');
@@ -26,7 +26,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::post('/{user}/toggle-verification', [UsersController::class, 'toggleVerification'])->name('toggle-verification');
         Route::post('/{user}/impersonate', [UsersController::class, 'impersonate'])->name('impersonate');
     });
-    
+
     // Links management
     Route::prefix('links')->name('links.')->group(function () {
         Route::get('/', [LinksController::class, 'index'])->name('index');
@@ -36,7 +36,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::post('/{link}/toggle-visibility', [LinksController::class, 'toggleVisibility'])->name('toggle-visibility');
         Route::post('/bulk-action', [LinksController::class, 'bulkAction'])->name('bulk-action');
     });
-    
+
     // Analytics
     Route::prefix('analytics')->name('analytics.')->group(function () {
         Route::get('/', [AnalyticsController::class, 'index'])->name('index');

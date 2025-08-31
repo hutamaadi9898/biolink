@@ -49,27 +49,27 @@ class ProfileFactory extends Factory
     private function generateSocialLinks(): array
     {
         $links = [];
-        
+
         if (fake()->boolean(70)) {
-            $links['instagram'] = 'https://instagram.com/' . fake()->userName();
+            $links['instagram'] = 'https://instagram.com/'.fake()->userName();
         }
-        
+
         if (fake()->boolean(60)) {
-            $links['tiktok'] = 'https://tiktok.com/@' . fake()->userName();
+            $links['tiktok'] = 'https://tiktok.com/@'.fake()->userName();
         }
-        
+
         if (fake()->boolean(50)) {
-            $links['youtube'] = 'https://youtube.com/@' . fake()->userName();
+            $links['youtube'] = 'https://youtube.com/@'.fake()->userName();
         }
-        
+
         if (fake()->boolean(40)) {
-            $links['twitter'] = 'https://twitter.com/' . fake()->userName();
+            $links['twitter'] = 'https://twitter.com/'.fake()->userName();
         }
-        
+
         if (fake()->boolean(30)) {
-            $links['linkedin'] = 'https://linkedin.com/in/' . fake()->userName();
+            $links['linkedin'] = 'https://linkedin.com/in/'.fake()->userName();
         }
-        
+
         return $links;
     }
 
@@ -81,9 +81,9 @@ class ProfileFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'bio' => 'Content creator passionate about sharing knowledge and inspiration. Follow my journey!',
             'social_links' => json_encode([
-                'instagram' => 'https://instagram.com/' . fake()->userName(),
-                'tiktok' => 'https://tiktok.com/@' . fake()->userName(),
-                'youtube' => 'https://youtube.com/@' . fake()->userName(),
+                'instagram' => 'https://instagram.com/'.fake()->userName(),
+                'tiktok' => 'https://tiktok.com/@'.fake()->userName(),
+                'youtube' => 'https://youtube.com/@'.fake()->userName(),
             ]),
         ]);
     }
@@ -95,10 +95,10 @@ class ProfileFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'bio' => 'Professional business profile. Get in touch for collaborations and services.',
-            'location' => fake()->city() . ', Indonesia',
+            'location' => fake()->city().', Indonesia',
             'social_links' => json_encode([
-                'linkedin' => 'https://linkedin.com/in/' . fake()->userName(),
-                'instagram' => 'https://instagram.com/' . fake()->userName(),
+                'linkedin' => 'https://linkedin.com/in/'.fake()->userName(),
+                'instagram' => 'https://instagram.com/'.fake()->userName(),
             ]),
         ]);
     }

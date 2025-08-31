@@ -27,7 +27,7 @@ return new class extends Migration
             $table->json('metadata')->nullable(); // Additional tracking data
             $table->timestamp('occurred_at')->index();
             $table->timestamps();
-            
+
             $table->index(['user_id', 'event_type', 'occurred_at']);
             $table->index(['user_id', 'occurred_at']);
         });

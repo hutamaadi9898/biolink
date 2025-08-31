@@ -20,7 +20,7 @@ class PortfolioFactory extends Factory
     {
         $categories = ['design', 'development', 'photography', 'writing', 'music', 'video', 'art'];
         $technologies = ['HTML', 'CSS', 'JavaScript', 'React', 'Vue', 'Laravel', 'PHP', 'Python', 'Figma', 'Photoshop'];
-        
+
         return [
             'user_id' => User::factory(),
             'title' => fake()->sentence(4),
@@ -50,7 +50,7 @@ class PortfolioFactory extends Factory
                 fake()->imageUrl(800, 600),
             ];
         }
-        
+
         return [];
     }
 
@@ -72,7 +72,7 @@ class PortfolioFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'category' => 'design',
-            'title' => 'UI/UX Design for ' . fake()->company(),
+            'title' => 'UI/UX Design for '.fake()->company(),
             'description' => 'Modern and intuitive user interface design focusing on user experience and accessibility.',
             'tags' => json_encode(['Figma', 'Adobe XD', 'Sketch', 'InVision']),
         ]);
@@ -88,7 +88,7 @@ class PortfolioFactory extends Factory
             'title' => fake()->randomElement(['E-commerce Platform', 'Mobile App', 'Web Application', 'SaaS Dashboard']),
             'description' => 'Full-stack web application built with modern technologies and best practices.',
             'tags' => json_encode(['Laravel', 'Vue.js', 'TailwindCSS', 'MySQL']),
-            'link' => 'https://github.com/' . fake()->userName() . '/' . fake()->slug(),
+            'link' => 'https://github.com/'.fake()->userName().'/'.fake()->slug(),
         ]);
     }
 

@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\User;
 use App\Models\Link;
 use App\Models\Portfolio;
 use App\Models\Profile;
+use App\Models\User;
 
 describe('Public Profile Page', function () {
     beforeEach(function () {
@@ -36,21 +36,21 @@ describe('Public Profile Page', function () {
     });
 
     it('displays public profile page correctly', function () {
-        $page = visit('/' . $this->user->slug);
+        $page = visit('/'.$this->user->slug);
 
         $page->assertSee($this->user->name)
             ->assertNoJavascriptErrors();
     });
 
     it('shows user links on profile page', function () {
-        $page = visit('/' . $this->user->slug);
+        $page = visit('/'.$this->user->slug);
 
         $page->assertSee('Links')
             ->assertNoJavascriptErrors();
     });
 
     it('displays portfolio section when available', function () {
-        $page = visit('/' . $this->user->slug);
+        $page = visit('/'.$this->user->slug);
 
         $page->assertSee('Portfolio')
             ->assertNoJavascriptErrors();
@@ -59,7 +59,7 @@ describe('Public Profile Page', function () {
     it('allows clicking on user links', function () {
         $link = Link::where('user_id', $this->user->id)->first();
 
-        $page = visit('/' . $this->user->slug);
+        $page = visit('/'.$this->user->slug);
 
         // Just verify links are clickable (they open in new tab)
         $page->assertSee($link->title)
@@ -70,7 +70,7 @@ describe('Public Profile Page', function () {
     it('tracks portfolio item views', function () {
         $portfolio = Portfolio::where('user_id', $this->user->id)->first();
 
-        $page = visit('/' . $this->user->slug);
+        $page = visit('/'.$this->user->slug);
 
         // Just verify portfolio section exists
         $page->assertSee('Portfolio')
@@ -87,7 +87,7 @@ describe('Public Profile Page', function () {
             ],
         ]);
 
-        $page = visit('/' . $this->user->slug);
+        $page = visit('/'.$this->user->slug);
 
         // Just verify page loads successfully with social links
         $page->assertSee($this->user->name)
@@ -95,7 +95,7 @@ describe('Public Profile Page', function () {
     });
 
     it('applies user selected theme', function () {
-        $page = visit('/' . $this->user->slug);
+        $page = visit('/'.$this->user->slug);
 
         // Verify themed profile page loads
         $page->assertSee($this->user->name)
@@ -103,7 +103,7 @@ describe('Public Profile Page', function () {
     });
 
     it('displays QR code for profile sharing', function () {
-        $page = visit('/' . $this->user->slug);
+        $page = visit('/'.$this->user->slug);
 
         // Just verify profile page loads
         $page->assertSee($this->user->name)
@@ -111,7 +111,7 @@ describe('Public Profile Page', function () {
     });
 
     it('allows sharing profile via social media', function () {
-        $page = visit('/' . $this->user->slug);
+        $page = visit('/'.$this->user->slug);
 
         // Just verify profile page loads
         $page->assertSee($this->user->name)
@@ -124,7 +124,7 @@ describe('Public Profile Page', function () {
             'phone_number' => '+62812345678',
         ]);
 
-        $page = visit('/' . $this->user->slug);
+        $page = visit('/'.$this->user->slug);
 
         // Just verify profile page loads
         $page->assertSee($this->user->name)
@@ -132,7 +132,7 @@ describe('Public Profile Page', function () {
     });
 
     it('has responsive design on mobile devices', function () {
-        $page = visit('/' . $this->user->slug);
+        $page = visit('/'.$this->user->slug);
 
         // Note: resize() method may not be available in all Pest browser versions
         $page->assertSee($this->user->name)
@@ -150,20 +150,20 @@ describe('Public Profile Page', function () {
         $this->user->update([
             'bio' => 'Passionate developer creating amazing digital experiences',
         ]);
-        
+
         // Update the profile too
         $this->profile->update([
             'bio' => 'Passionate developer creating amazing digital experiences',
         ]);
 
-        $page = visit('/' . $this->user->slug);
+        $page = visit('/'.$this->user->slug);
 
         $page->assertSee('Passionate developer creating amazing digital experiences')
             ->assertNoJavascriptErrors();
     });
 
     it('shows visitor count when enabled', function () {
-        $page = visit('/' . $this->user->slug);
+        $page = visit('/'.$this->user->slug);
 
         // Check if the view count section exists
         $page->assertSee('Views')
@@ -171,7 +171,7 @@ describe('Public Profile Page', function () {
     });
 
     it('allows copying profile link', function () {
-        $page = visit('/' . $this->user->slug);
+        $page = visit('/'.$this->user->slug);
 
         // Just verify profile page loads
         $page->assertSee($this->user->name)
@@ -180,7 +180,7 @@ describe('Public Profile Page', function () {
 
     it('displays profile in dark mode when theme is set', function () {
         // Test theme switching functionality
-        $page = visit('/' . $this->user->slug);
+        $page = visit('/'.$this->user->slug);
 
         // Verify basic functionality
         $page->assertSee($this->user->name)
@@ -188,7 +188,7 @@ describe('Public Profile Page', function () {
     });
 
     it('shows loading state for profile content', function () {
-        $page = visit('/' . $this->user->slug);
+        $page = visit('/'.$this->user->slug);
 
         // This would test loading states if implemented
         $page->assertSee($this->user->name)
@@ -196,7 +196,7 @@ describe('Public Profile Page', function () {
     });
 
     it('displays correct meta tags for SEO', function () {
-        $page = visit('/' . $this->user->slug);
+        $page = visit('/'.$this->user->slug);
 
         $page->assertSee($this->user->name)
             ->assertNoJavascriptErrors();

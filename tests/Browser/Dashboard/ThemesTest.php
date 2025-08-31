@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\User;
 use App\Models\Theme;
+use App\Models\User;
 
 describe('Themes Management', function () {
     beforeEach(function () {
@@ -28,7 +28,7 @@ describe('Themes Management', function () {
 
     it('shows current active theme', function () {
         $theme = Theme::where('is_premium', false)->first();
-        
+
         $this->user->update(['current_theme_id' => $theme->id]);
 
         $page = visit('/dashboard/themes');
@@ -63,7 +63,7 @@ describe('Themes Management', function () {
 
         $page = visit('/dashboard/themes');
 
-        $page->click('[data-testid="apply-theme-' . $freeTheme->id . '"]')
+        $page->click('[data-testid="apply-theme-'.$freeTheme->id.'"]')
             ->assertSee('Tema berhasil diterapkan')
             ->assertSee('Tema Aktif')
             ->assertSee($freeTheme->name)
@@ -80,7 +80,7 @@ describe('Themes Management', function () {
 
         $page = visit('/dashboard/themes');
 
-        $page->click('[data-testid="apply-theme-' . $premiumTheme->id . '"]')
+        $page->click('[data-testid="apply-theme-'.$premiumTheme->id.'"]')
             ->assertSee('Upgrade ke Pro untuk menggunakan tema ini')
             ->assertNoJavascriptErrors();
     });
@@ -92,7 +92,7 @@ describe('Themes Management', function () {
         $page = visit('/dashboard/themes');
 
         $page->assertSee('PRO MEMBER')
-            ->click('[data-testid="apply-theme-' . $premiumTheme->id . '"]')
+            ->click('[data-testid="apply-theme-'.$premiumTheme->id.'"]')
             ->assertSee('Tema berhasil diterapkan')
             ->assertSee($premiumTheme->name)
             ->assertNoJavascriptErrors();
@@ -108,7 +108,7 @@ describe('Themes Management', function () {
 
         $page = visit('/dashboard/themes');
 
-        $page->click('[data-testid="preview-theme-' . $theme->id . '"]')
+        $page->click('[data-testid="preview-theme-'.$theme->id.'"]')
             ->assertVisible('[data-testid="theme-preview-modal"]')
             ->assertSee('Preview')
             ->assertSee($theme->name)
@@ -187,9 +187,9 @@ describe('Themes Management', function () {
 
         $page = visit('/dashboard/themes');
 
-        $page->click('[data-testid="apply-theme-' . $theme->id . '"]')
+        $page->click('[data-testid="apply-theme-'.$theme->id.'"]')
             ->assertVisible('[data-testid="confirm-modal"]')
-            ->assertSee('Terapkan tema ' . $theme->name . '?')
+            ->assertSee('Terapkan tema '.$theme->name.'?')
             ->click('Ya, Terapkan')
             ->assertSee('Tema berhasil diterapkan')
             ->assertNoJavascriptErrors();
@@ -218,7 +218,7 @@ describe('Themes Management', function () {
 
         $page = visit('/dashboard/themes');
 
-        $page->click('[data-testid="apply-theme-' . $theme->id . '"]')
+        $page->click('[data-testid="apply-theme-'.$theme->id.'"]')
             ->assertVisible('[data-testid="loading-spinner"]')
             ->waitForReload()
             ->assertNotVisible('[data-testid="loading-spinner"]')

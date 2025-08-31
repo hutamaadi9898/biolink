@@ -731,7 +731,7 @@
     </AppLayout>
 </template>
 
-<script setup>
+<script lang="ts">
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/AppLayout.vue';

@@ -27,7 +27,7 @@ return new class extends Migration
             $table->integer('view_count')->default(0);
             $table->date('project_date')->nullable();
             $table->timestamps();
-            
+
             $table->index(['user_id', 'is_active', 'order']);
             $table->index(['user_id', 'is_featured']);
         });

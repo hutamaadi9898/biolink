@@ -12,8 +12,8 @@ class EmbedService
     public static function createEmbedLink(int $userId, string $url, array $options = []): ?Link
     {
         $embedData = Link::parseEmbedData($url);
-        
-        if (!$embedData) {
+
+        if (! $embedData) {
             return null;
         }
 
@@ -40,7 +40,7 @@ class EmbedService
      */
     private static function getDefaultTitle(string $type): string
     {
-        return match($type) {
+        return match ($type) {
             'spotify' => 'Musik Favorit Saya',
             'youtube' => 'Video Terbaru',
             'instagram' => 'Post Instagram',
@@ -54,7 +54,7 @@ class EmbedService
      */
     private static function getDefaultDescription(string $type): string
     {
-        return match($type) {
+        return match ($type) {
             'spotify' => 'Dengarkan playlist favorit saya',
             'youtube' => 'Tonton video terbaru saya',
             'instagram' => 'Lihat post terbaru di Instagram',
@@ -69,8 +69,8 @@ class EmbedService
     public static function updateEmbedData(Link $link): bool
     {
         $embedData = Link::parseEmbedData($link->url);
-        
-        if (!$embedData) {
+
+        if (! $embedData) {
             return false;
         }
 
@@ -93,17 +93,17 @@ class EmbedService
             'spotify' => [
                 'name' => 'Spotify',
                 'pattern' => 'spotify.com/(track|album|playlist|artist)/',
-                'description' => 'Share music, playlists, and artists'
+                'description' => 'Share music, playlists, and artists',
             ],
             'youtube' => [
                 'name' => 'YouTube',
                 'pattern' => '(youtube.com/watch|youtu.be/)',
-                'description' => 'Embed videos directly'
+                'description' => 'Embed videos directly',
             ],
             'instagram' => [
                 'name' => 'Instagram',
                 'pattern' => 'instagram.com/(p|reel)/',
-                'description' => 'Show posts and reels'
+                'description' => 'Show posts and reels',
             ],
         ];
     }
@@ -119,7 +119,7 @@ class EmbedService
                 'platform' => 'spotify',
                 'type' => $matches[1],
                 'id' => $matches[2],
-                'url' => $url
+                'url' => $url,
             ];
         }
 
@@ -129,7 +129,7 @@ class EmbedService
                 'platform' => 'youtube',
                 'type' => 'video',
                 'id' => $matches[1],
-                'url' => $url
+                'url' => $url,
             ];
         }
 
@@ -139,7 +139,7 @@ class EmbedService
                 'platform' => 'instagram',
                 'type' => 'post',
                 'id' => $matches[2],
-                'url' => $url
+                'url' => $url,
             ];
         }
 
@@ -169,7 +169,8 @@ class EmbedService
     private static function generateSpotifyEmbed(array $embedData): string
     {
         $embedUrl = "https://open.spotify.com/embed/{$embedData['type']}/{$embedData['id']}";
-        return '<iframe src="' . $embedUrl . '" width="100%" height="352" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>';
+
+        return '<iframe src="'.$embedUrl.'" width="100%" height="352" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>';
     }
 
     /**
@@ -178,7 +179,8 @@ class EmbedService
     private static function generateYouTubeEmbed(array $embedData): string
     {
         $embedUrl = "https://www.youtube.com/embed/{$embedData['id']}";
-        return '<iframe src="' . $embedUrl . '" width="100%" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+
+        return '<iframe src="'.$embedUrl.'" width="100%" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
     }
 
     /**
@@ -187,6 +189,7 @@ class EmbedService
     private static function generateInstagramEmbed(array $embedData): string
     {
         $postUrl = "https://www.instagram.com/p/{$embedData['id']}/embed";
-        return '<iframe src="' . $postUrl . '" width="100%" height="500" frameborder="0" scrolling="no" allowtransparency="true"></iframe>';
+
+        return '<iframe src="'.$postUrl.'" width="100%" height="500" frameborder="0" scrolling="no" allowtransparency="true"></iframe>';
     }
 }

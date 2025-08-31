@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\User;
 use App\Models\Link;
+use App\Models\User;
 
 describe('Links Management', function () {
     beforeEach(function () {
@@ -76,7 +76,7 @@ describe('Links Management', function () {
 
         $page->assertSee('Existing Link')
             ->assertSee('https://existing.com')
-            ->assertVisible('[data-testid="link-item-' . $link->id . '"]')
+            ->assertVisible('[data-testid="link-item-'.$link->id.'"]')
             ->assertNoJavascriptErrors();
     });
 
@@ -89,7 +89,7 @@ describe('Links Management', function () {
 
         $page = visit('/dashboard/links');
 
-        $page->click('[data-testid="edit-link-' . $link->id . '"]')
+        $page->click('[data-testid="edit-link-'.$link->id.'"]')
             ->fill('title', 'Updated Title')
             ->fill('url', 'https://updated.com')
             ->click('Update Link')
@@ -113,9 +113,9 @@ describe('Links Management', function () {
 
         $page = visit('/dashboard/links');
 
-        $page->click('[data-testid="toggle-link-' . $link->id . '"]')
+        $page->click('[data-testid="toggle-link-'.$link->id.'"]')
             ->assertSee('Link berhasil dinonaktifkan')
-            ->assertVisible('[data-testid="inactive-link-' . $link->id . '"]')
+            ->assertVisible('[data-testid="inactive-link-'.$link->id.'"]')
             ->assertNoJavascriptErrors();
 
         $this->assertDatabaseHas('links', [
@@ -132,7 +132,7 @@ describe('Links Management', function () {
 
         $page = visit('/dashboard/links');
 
-        $page->click('[data-testid="delete-link-' . $link->id . '"]')
+        $page->click('[data-testid="delete-link-'.$link->id.'"]')
             ->click('Ya, Hapus')
             ->assertSee('Link berhasil dihapus')
             ->assertDontSee('To Be Deleted')
@@ -158,7 +158,7 @@ describe('Links Management', function () {
 
         $page = visit('/dashboard/links');
 
-        $page->dragElement('[data-testid="link-item-' . $link2->id . '"]', 0, -100)
+        $page->dragElement('[data-testid="link-item-'.$link2->id.'"]', 0, -100)
             ->assertSee('Link berhasil diurutkan')
             ->assertNoJavascriptErrors();
     });
@@ -173,7 +173,7 @@ describe('Links Management', function () {
         $page = visit('/dashboard/links');
 
         $page->assertSee('150 clicks')
-            ->assertVisible('[data-testid="link-stats-' . $link->id . '"]')
+            ->assertVisible('[data-testid="link-stats-'.$link->id.'"]')
             ->assertNoJavascriptErrors();
     });
 
@@ -191,8 +191,8 @@ describe('Links Management', function () {
 
         $page = visit('/dashboard/links');
 
-        $page->check('[data-testid="select-link-' . $link1->id . '"]')
-            ->check('[data-testid="select-link-' . $link2->id . '"]')
+        $page->check('[data-testid="select-link-'.$link1->id.'"]')
+            ->check('[data-testid="select-link-'.$link2->id.'"]')
             ->click('[data-testid="bulk-delete"]')
             ->click('Ya, Hapus Semua')
             ->assertSee('Links berhasil dihapus')
@@ -207,7 +207,7 @@ describe('Links Management', function () {
 
         $page = visit('/dashboard/links');
 
-        $page->click('[data-testid="preview-link-' . $link->id . '"]')
+        $page->click('[data-testid="preview-link-'.$link->id.'"]')
             ->assertVisible('[data-testid="link-preview-modal"]')
             ->assertSee('Preview Link')
             ->assertNoJavascriptErrors();

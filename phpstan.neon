@@ -1,0 +1,19 @@
+parameters:
+    level: 5
+    paths:
+        - app
+        - bootstrap
+        - config
+        - database
+        - routes
+        - tests
+    excludePaths:
+        - app/Http/Controllers/LinkControllerNew.php
+        - app/Http/Controllers/LinkControllerOld.php
+        - bootstrap/cache
+        - storage
+        - vendor
+    ignoreErrors:
+        - '#Call to an undefined method App\\Models\\User::[a-zA-Z0-9\\_]+\(\)#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::[a-zA-Z0-9\\_]+\(\)#'
+    reportUnmatchedIgnoredErrors: false

@@ -2,12 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Profile;
 use App\Models\Link;
 use App\Models\Portfolio;
-use App\Models\Theme;
-use App\Models\UserTheme;
+use App\Models\Profile;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -100,7 +98,7 @@ class HutamaUserSeeder extends Seeder
             Link::updateOrCreate(
                 [
                     'user_id' => $user->id,
-                    'url' => $linkData['url']
+                    'url' => $linkData['url'],
                 ],
                 $linkData + ['is_active' => true]
             );
@@ -149,7 +147,7 @@ class HutamaUserSeeder extends Seeder
             Link::updateOrCreate(
                 [
                     'user_id' => $user->id,
-                    'url' => $linkData['url']
+                    'url' => $linkData['url'],
                 ],
                 $linkData + ['is_active' => true]
             );
@@ -193,7 +191,7 @@ class HutamaUserSeeder extends Seeder
             Portfolio::updateOrCreate(
                 [
                     'user_id' => $user->id,
-                    'title' => $portfolioData['title']
+                    'title' => $portfolioData['title'],
                 ],
                 $portfolioData
             );
@@ -202,6 +200,6 @@ class HutamaUserSeeder extends Seeder
         $this->command->info('✅ Hutama Adi Rahardjo user seeded successfully!');
         $this->command->info('📧 Email: hutama@example.com');
         $this->command->info('🔑 Password: password');
-        $this->command->info('🔗 Profile URL: ' . route('profile.show', $user->username ?? 'hutama-adi-rahardjo'));
+        $this->command->info('🔗 Profile URL: '.route('profile.show', $user->username ?? 'hutama-adi-rahardjo'));
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Link extends Model
 {
@@ -56,7 +56,7 @@ class Link extends Model
     {
         return Analytics::where('user_id', $this->user_id)
             ->where('event_type', 'link_click')
-            ->where('event_data', '"' . $this->id . '"')
+            ->where('event_data', '"'.$this->id.'"')
             ->get();
     }
 
@@ -67,7 +67,7 @@ class Link extends Model
     {
         return Analytics::where('user_id', $this->user_id)
             ->where('event_type', 'link_click')
-            ->where('event_data', '"' . $this->id . '"')
+            ->where('event_data', '"'.$this->id.'"')
             ->count();
     }
 
@@ -113,9 +113,10 @@ class Link extends Model
         if (preg_match('/(\+?62\d{8,13})/', $url, $matches)) {
             $phone = $matches[1];
             $phone = preg_replace('/^\+?62/', '62', $phone);
+
             return "https://wa.me/{$phone}";
         }
-        
+
         return $url;
     }
 
@@ -125,10 +126,10 @@ class Link extends Model
     private function formatShopeeUrl(string $url): string
     {
         // Ensure it's a proper Shopee Indonesia link
-        if (!str_contains($url, 'shopee.co.id')) {
+        if (! str_contains($url, 'shopee.co.id')) {
             return str_replace(['shopee.com', 'shopee.sg'], 'shopee.co.id', $url);
         }
-        
+
         return $url;
     }
 
@@ -138,10 +139,10 @@ class Link extends Model
     private function formatTokopediaUrl(string $url): string
     {
         // Ensure it's a proper Tokopedia link
-        if (!str_contains($url, 'tokopedia.com')) {
+        if (! str_contains($url, 'tokopedia.com')) {
             return $url;
         }
-        
+
         return $url;
     }
 
@@ -181,7 +182,7 @@ class Link extends Model
                 'type' => 'spotify',
                 'embed_type' => $matches[1],
                 'id' => $matches[2],
-                'embed_url' => "https://open.spotify.com/embed/{$matches[1]}/{$matches[2]}"
+                'embed_url' => "https://open.spotify.com/embed/{$matches[1]}/{$matches[2]}",
             ];
         }
 
@@ -190,7 +191,7 @@ class Link extends Model
             return [
                 'type' => 'youtube',
                 'video_id' => $matches[1],
-                'embed_url' => "https://www.youtube.com/embed/{$matches[1]}"
+                'embed_url' => "https://www.youtube.com/embed/{$matches[1]}",
             ];
         }
 
@@ -200,7 +201,7 @@ class Link extends Model
                 'type' => 'instagram',
                 'post_type' => $matches[1],
                 'id' => $matches[2],
-                'embed_url' => "{$url}embed/"
+                'embed_url' => "{$url}embed/",
             ];
         }
 
@@ -212,14 +213,14 @@ class Link extends Model
      */
     public function getEmbedHtmlAttribute(): ?string
     {
-        if (!$this->show_as_embed || !$this->embed_data) {
+        if (! $this->show_as_embed || ! $this->embed_data) {
             return null;
         }
 
         // Ensure embed_data is an array
         $embedData = is_array($this->embed_data) ? $this->embed_data : json_decode($this->embed_data, true);
-        
-        if (!$embedData || !isset($embedData['embed_url'])) {
+
+        if (! $embedData || ! isset($embedData['embed_url'])) {
             return null;
         }
 
@@ -241,6 +242,7 @@ class Link extends Model
     private function getSpotifyEmbed(array $embedData): string
     {
         $embedUrl = $embedData['embed_url'];
+
         return "<iframe style=\"border-radius:12px\" src=\"{$embedUrl}?utm_source=generator\" width=\"100%\" height=\"352\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>";
     }
 
@@ -250,6 +252,7 @@ class Link extends Model
     private function getYouTubeEmbed(array $embedData): string
     {
         $embedUrl = $embedData['embed_url'];
+
         return "<iframe width=\"100%\" height=\"315\" src=\"{$embedUrl}\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen loading=\"lazy\"></iframe>";
     }
 

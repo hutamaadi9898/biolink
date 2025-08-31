@@ -21,7 +21,7 @@ class LinkFactory extends Factory
         $types = ['social', 'portfolio', 'deeplink', 'custom'];
         $type = fake()->randomElement($types);
         $isEmbed = fake()->boolean(30);
-        
+
         return [
             'user_id' => User::factory(),
             'type' => $type,
@@ -53,7 +53,7 @@ class LinkFactory extends Factory
                 'platform' => 'spotify',
                 'type' => 'track',
                 'id' => '4cOdK2wGLETKBW3PvgPWqT',
-                'url' => 'https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT'
+                'url' => 'https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT',
             ]),
             'show_as_embed' => true,
         ]);
@@ -73,7 +73,7 @@ class LinkFactory extends Factory
                 'platform' => 'youtube',
                 'type' => 'video',
                 'id' => 'dQw4w9WgXcQ',
-                'url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+                'url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
             ]),
             'show_as_embed' => true,
         ]);
@@ -93,7 +93,7 @@ class LinkFactory extends Factory
                 'platform' => 'instagram',
                 'type' => 'post',
                 'id' => 'ABC123',
-                'url' => 'https://www.instagram.com/p/ABC123/'
+                'url' => 'https://www.instagram.com/p/ABC123/',
             ]),
             'show_as_embed' => true,
         ]);
@@ -122,32 +122,32 @@ class LinkFactory extends Factory
     /**
      * Generate sample embed data.
      */
-    private function generateEmbedData(): string|null
+    private function generateEmbedData(): ?string
     {
         $platforms = ['spotify', 'youtube', 'instagram'];
         $platform = fake()->randomElement($platforms);
-        
-        $data = match($platform) {
+
+        $data = match ($platform) {
             'spotify' => [
                 'platform' => 'spotify',
                 'type' => 'track',
                 'id' => fake()->regexify('[a-zA-Z0-9]{22}'),
-                'url' => 'https://open.spotify.com/track/' . fake()->regexify('[a-zA-Z0-9]{22}')
+                'url' => 'https://open.spotify.com/track/'.fake()->regexify('[a-zA-Z0-9]{22}'),
             ],
             'youtube' => [
                 'platform' => 'youtube',
                 'type' => 'video',
                 'id' => fake()->regexify('[a-zA-Z0-9_-]{11}'),
-                'url' => 'https://www.youtube.com/watch?v=' . fake()->regexify('[a-zA-Z0-9_-]{11}')
+                'url' => 'https://www.youtube.com/watch?v='.fake()->regexify('[a-zA-Z0-9_-]{11}'),
             ],
             'instagram' => [
                 'platform' => 'instagram',
                 'type' => 'post',
                 'id' => fake()->regexify('[a-zA-Z0-9_-]{11}'),
-                'url' => 'https://www.instagram.com/p/' . fake()->regexify('[a-zA-Z0-9_-]{11}') . '/'
+                'url' => 'https://www.instagram.com/p/'.fake()->regexify('[a-zA-Z0-9_-]{11}').'/',
             ],
         };
-        
+
         return json_encode($data);
     }
 }

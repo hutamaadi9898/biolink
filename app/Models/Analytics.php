@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Redis;
 
 class Analytics extends Model
@@ -91,9 +91,9 @@ class Analytics extends Model
         try {
             $batchSize = 100;
             $processed = 0;
-            
+
             $events = Redis::lrange('analytics_queue', 0, $batchSize - 1);
-            
+
             if (empty($events)) {
                 return 0;
             }
@@ -101,7 +101,7 @@ class Analytics extends Model
             $analyticsData = [];
             foreach ($events as $event) {
                 $data = json_decode($event, true);
-                
+
                 $analyticsData[] = [
                     'user_id' => $data['user_id'],
                     'link_id' => $data['link_id'] ?? null,
@@ -122,7 +122,7 @@ class Analytics extends Model
                 ];
             }
 
-            if (!empty($analyticsData)) {
+            if (! empty($analyticsData)) {
                 self::insert($analyticsData);
                 Redis::ltrim('analytics_queue', count($events), -1);
                 $processed = count($events);
@@ -140,7 +140,7 @@ class Analytics extends Model
      */
     public static function getSummaryForUser(int $userId, string $period = 'week'): array
     {
-        $startDate = match($period) {
+        $startDate = match ($period) {
             'day' => now()->startOfDay(),
             'week' => now()->startOfWeek(),
             'month' => now()->startOfMonth(),

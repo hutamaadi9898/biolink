@@ -24,7 +24,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         $name = fake()->name();
-        
+
         return [
             'name' => $name,
             'email' => fake()->unique()->safeEmail(),
@@ -32,7 +32,7 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'username' => fake()->unique()->userName(),
-            'slug' => Str::slug($name) . '-' . fake()->unique()->numberBetween(1, 9999),
+            'slug' => Str::slug($name).'-'.fake()->unique()->numberBetween(1, 9999),
             'role' => fake()->randomElement(['free', 'pro']),
             'pro_expires_at' => fake()->boolean(30) ? fake()->dateTimeBetween('now', '+1 year') : null,
         ];

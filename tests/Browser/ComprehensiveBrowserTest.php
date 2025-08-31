@@ -4,7 +4,6 @@ use App\Models\Analytics;
 use App\Models\Link;
 use App\Models\Portfolio;
 use App\Models\Profile;
-use App\Models\Theme;
 use App\Models\User;
 use Tests\DuskTestCase;
 
@@ -17,7 +16,7 @@ beforeEach(function () {
         'password' => bcrypt('password'),
         'email_verified_at' => now(),
     ]);
-    
+
     // Create a profile for this user
     Profile::factory()->create([
         'user_id' => $this->user->id,
@@ -90,7 +89,7 @@ test('user can login and logout', function () {
 
 test('authenticated user can access dashboard', function () {
     $this->actingAs($this->user);
-    
+
     visit('/dashboard')
         ->assertSee('Dashboard')
         ->assertSee($this->user->name)
@@ -99,7 +98,7 @@ test('authenticated user can access dashboard', function () {
 
 test('user can navigate to different sections', function () {
     $this->actingAs($this->user);
-    
+
     $sections = [
         '/dashboard/links' => 'Links',
         '/dashboard/analytics' => 'Analytics',
@@ -116,9 +115,9 @@ test('user can navigate to different sections', function () {
 
 test('user can view links page', function () {
     $this->actingAs($this->user);
-    
+
     Link::factory(3)->create(['user_id' => $this->user->id]);
-    
+
     visit('/dashboard/links')
         ->assertSee('Links')
         ->assertNoJavascriptErrors();
@@ -126,7 +125,7 @@ test('user can view links page', function () {
 
 test('user can create new link', function () {
     $this->actingAs($this->user);
-    
+
     visit('/dashboard/links')
         ->wait(2) // Give page time to load
         ->assertNoJavascriptErrors();
@@ -139,9 +138,9 @@ test('user can create new link', function () {
 
 test('user can view portfolio page', function () {
     $this->actingAs($this->user);
-    
+
     Portfolio::factory(2)->create(['user_id' => $this->user->id]);
-    
+
     visit('/dashboard/portfolio')
         ->assertSee('Portfolio')
         ->assertNoJavascriptErrors();
@@ -149,7 +148,7 @@ test('user can view portfolio page', function () {
 
 test('user can create portfolio item', function () {
     $this->actingAs($this->user);
-    
+
     // Simplified test - just verify the page loads
     visit('/dashboard/portfolio')
         ->assertSee('Portfolio')
@@ -158,9 +157,9 @@ test('user can create portfolio item', function () {
 
 test('user can view analytics page', function () {
     $this->actingAs($this->user);
-    
+
     Analytics::factory(10)->create(['user_id' => $this->user->id]);
-    
+
     visit('/dashboard/analytics')
         ->assertSee('Analytics')
         ->assertNoJavascriptErrors();
@@ -171,20 +170,20 @@ test('public profile displays correctly', function () {
         'name' => 'Public User',
         'email_verified_at' => now(),
     ]);
-    
+
     // Create profile for the user
     $profile = Profile::factory()->create([
         'user_id' => $publicUser->id,
         'bio' => 'This is a public bio',
     ]);
-    
+
     Link::factory(3)->create([
         'user_id' => $publicUser->id,
         'is_active' => true,
     ]);
-    
+
     // Use the profile's slug instead of username
-    visit('/' . $profile->slug)
+    visit('/'.$profile->slug)
         ->assertSee('Public User')
         ->assertNoJavascriptErrors();
 });
@@ -197,7 +196,7 @@ test('nonexistent profile shows 404', function () {
 
 test('user can access settings page', function () {
     $this->actingAs($this->user);
-    
+
     visit('/settings/profile') // Fixed route
         ->assertSee('Profile')
         ->assertSee($this->user->name)
@@ -207,7 +206,7 @@ test('user can access settings page', function () {
 
 test('user can update profile settings', function () {
     $this->actingAs($this->user);
-    
+
     // Simplified test - just verify the page loads
     visit('/settings/profile') // Fixed route
         ->assertSee('Profile')
@@ -216,7 +215,7 @@ test('user can update profile settings', function () {
 
 test('responsive navigation works', function () {
     $this->actingAs($this->user);
-    
+
     // Use mobile viewport via visit
     visit('/dashboard')->on()->mobile()
         ->assertSee('Dashboard')
@@ -225,7 +224,7 @@ test('responsive navigation works', function () {
 
 test('theme switching works', function () {
     $this->actingAs($this->user);
-    
+
     visit('/dashboard/themes')
         ->assertSee('Themes')
         ->assertNoJavascriptErrors();
@@ -236,7 +235,7 @@ test('form validation works on registration', function () {
     visit('/register')
         ->assertSee('Buat Akun')
         ->assertNoJavascriptErrors();
-    
+
     // The button should be disabled by default, so clicking it won't submit
     visit('/register')
         ->assertPathIs('/register') // Should stay on registration page
@@ -285,7 +284,7 @@ test('complete user journey from registration to link creation', function () {
 
 test('themes are properly seeded', function () {
     $this->actingAs($this->user);
-    
+
     visit('/dashboard/themes')
         ->assertSee('Themes')
         ->assertNoJavascriptErrors();

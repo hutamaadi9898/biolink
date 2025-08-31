@@ -18,7 +18,7 @@ return new class extends Migration
             $table->json('custom_config')->nullable(); // User customizations to the theme
             $table->boolean('is_active')->default(false);
             $table->timestamps();
-            
+
             $table->unique(['user_id', 'theme_id']);
             $table->index(['user_id', 'is_active']);
         });

@@ -28,7 +28,7 @@ return new class extends Migration
             $table->integer('view_count')->default(0);
             $table->json('seo_data')->nullable(); // meta title, description, keywords
             $table->timestamps();
-            
+
             $table->index(['slug', 'is_public']);
             $table->index('user_id');
         });

@@ -4,10 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -71,7 +71,7 @@ class User extends Authenticatable
      */
     public function isPro(): bool
     {
-        return $this->role === 'pro' && 
+        return $this->role === 'pro' &&
                ($this->pro_expires_at === null || $this->pro_expires_at->isFuture());
     }
 
@@ -133,7 +133,7 @@ class User extends Authenticatable
         $counter = 1;
 
         while (static::where('slug', $slug)->where('id', '!=', $this->id)->exists()) {
-            $slug = $baseSlug . '-' . $counter;
+            $slug = $baseSlug.'-'.$counter;
             $counter++;
         }
 

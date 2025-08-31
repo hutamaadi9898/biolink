@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Analytics;
-use App\Models\User;
 use App\Models\Link;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,7 +21,7 @@ class AnalyticsFactory extends Factory
         $eventTypes = ['profile_view', 'link_click', 'portfolio_view'];
         $deviceTypes = ['mobile', 'desktop', 'tablet'];
         $referrers = ['direct', 'instagram', 'twitter', 'facebook', 'google'];
-        
+
         return [
             'user_id' => User::factory(),
             'event_type' => fake()->randomElement($eventTypes),
@@ -129,7 +128,7 @@ class AnalyticsFactory extends Factory
     {
         $platforms = ['instagram', 'tiktok', 'twitter', 'facebook'];
         $platform = fake()->randomElement($platforms);
-        
+
         return $this->state(fn (array $attributes) => [
             'referrer' => $platform,
             'metadata' => json_encode([

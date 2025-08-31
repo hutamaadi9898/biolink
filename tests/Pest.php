@@ -56,7 +56,7 @@ expect()->extend('toBeOne', function () {
 */
 
 function something()
-{ 
+{
     // ..
 }
 
@@ -65,7 +65,7 @@ function something()
 | Browser Testing Configuration
 |--------------------------------------------------------------------------
 |
-| Configure browser testing for Pest 4. This uses feature tests that 
+| Configure browser testing for Pest 4. This uses feature tests that
 | simulate browser behavior without requiring actual browser automation.
 |
 */
@@ -80,6 +80,7 @@ function visitAsUser(string $url, $user = null)
     if ($user) {
         test()->actingAs($user);
     }
+
     return test()->get($url);
 }
 

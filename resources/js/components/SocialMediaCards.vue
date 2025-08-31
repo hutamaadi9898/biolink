@@ -205,7 +205,7 @@
     </div>
 </template>
 
-<script setup>
+<script lang="ts">
 import { reactive, ref } from 'vue';
 
 const props = defineProps({

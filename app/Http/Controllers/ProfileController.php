@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Profile;
 use App\Models\Analytics;
+use App\Models\Profile;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Jenssegers\Agent\Agent;
 
@@ -24,10 +24,10 @@ class ProfileController extends Controller
                 $query->orderBy('order');
             },
             'activeTheme.theme',
-            'profile'
+            'profile',
         ])
-        ->where('slug', $slug)
-        ->firstOrFail();
+            ->where('slug', $slug)
+            ->firstOrFail();
 
         // Load embed HTML for links that should show as embeds
         $user->links->each(function ($link) {
@@ -43,7 +43,7 @@ class ProfileController extends Controller
         });
 
         // Create profile if it doesn't exist
-        if (!$user->profile) {
+        if (! $user->profile) {
             $profile = Profile::create([
                 'user_id' => $user->id,
                 'slug' => $user->slug,
@@ -59,7 +59,7 @@ class ProfileController extends Controller
         }
 
         // Only show public profiles
-        if (!$profile->is_public) {
+        if (! $profile->is_public) {
             abort(404);
         }
 
@@ -120,18 +120,18 @@ class ProfileController extends Controller
     public function generateQrCode(string $slug)
     {
         $profile = Profile::where('slug', $slug)->firstOrFail();
-        
-        if (!$profile->show_qr_code) {
+
+        if (! $profile->show_qr_code) {
             abort(404);
         }
 
         // Generate QR code using a QR code library
         $url = $profile->url;
-        
+
         // For now, return a simple response - you can integrate with a QR code library
         return response()->json([
             'url' => $url,
-            'qr_code' => "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" . urlencode($url)
+            'qr_code' => 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data='.urlencode($url),
         ]);
     }
 
@@ -140,7 +140,7 @@ class ProfileController extends Controller
      */
     private function trackAnalytics(int $userId, string $eventType, ?int $relatedId, Request $request): void
     {
-        $agent = new Agent();
+        $agent = new Agent;
 
         $data = [
             'user_id' => $userId,

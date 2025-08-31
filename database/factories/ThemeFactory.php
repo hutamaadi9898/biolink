@@ -18,7 +18,7 @@ class ThemeFactory extends Factory
     public function definition(): array
     {
         $categories = ['business', 'creative', 'minimal', 'colorful', 'modern', 'classic'];
-        
+
         return [
             'name' => fake()->unique()->words(2, true),
             'slug' => fake()->unique()->slug(),

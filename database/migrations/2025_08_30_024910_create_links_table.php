@@ -26,7 +26,7 @@ return new class extends Migration
             $table->json('metadata')->nullable(); // Auto-detected info about the link
             $table->timestamp('last_clicked_at')->nullable();
             $table->timestamps();
-            
+
             $table->index(['user_id', 'is_active', 'order']);
             $table->index(['type', 'user_id']);
         });

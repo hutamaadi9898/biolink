@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Theme extends Model
 {
@@ -64,7 +64,7 @@ class Theme extends Model
      */
     public function isAvailableForUser(User $user): bool
     {
-        if (!$this->is_premium) {
+        if (! $this->is_premium) {
             return true;
         }
 

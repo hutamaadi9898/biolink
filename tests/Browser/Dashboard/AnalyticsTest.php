@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\User;
-use App\Models\Link;
 use App\Models\Analytics;
+use App\Models\Link;
+use App\Models\User;
 
 describe('Analytics Dashboard', function () {
     beforeEach(function () {

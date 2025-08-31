@@ -28,21 +28,21 @@ class ProcessAnalyticsQueue extends Command
     public function handle()
     {
         $processed = 0;
-        
+
         // Process up to 1000 items at a time
         while ($processed < 1000) {
             $item = Redis::rpop('analytics_queue');
-            
-            if (!$item) {
+
+            if (! $item) {
                 break; // Queue is empty
             }
-            
+
             try {
                 $data = json_decode($item, true);
-                
+
                 // Valid event types from database constraint
                 $validEventTypes = ['profile_view', 'link_click', 'portfolio_view'];
-                
+
                 if ($data && in_array($data['event_type'], $validEventTypes)) {
                     Analytics::create([
                         'user_id' => $data['user_id'] ?? null,
@@ -55,31 +55,31 @@ class ProcessAnalyticsQueue extends Command
                         'device_type' => $data['device_type'] ?? null,
                         'browser' => $data['browser'] ?? null,
                         'os' => $data['os'] ?? null,
-                        'occurred_at' => isset($data['timestamp']) ? 
+                        'occurred_at' => isset($data['timestamp']) ?
                             \Carbon\Carbon::createFromTimestamp($data['timestamp']) : now(),
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);
-                    
+
                     $processed++;
                 } else {
                     // Skip invalid event types
-                    $this->warn("Skipped invalid event type: " . ($data['event_type'] ?? 'unknown'));
+                    $this->warn('Skipped invalid event type: '.($data['event_type'] ?? 'unknown'));
                 }
             } catch (\Exception $e) {
-                $this->error("Failed to process analytics item: " . $e->getMessage());
+                $this->error('Failed to process analytics item: '.$e->getMessage());
                 // Put the item back in the queue for retry
                 Redis::lpush('analytics_queue', $item);
                 break;
             }
         }
-        
+
         if ($processed > 0) {
             $this->info("Processed {$processed} analytics events.");
         } else {
-            $this->info("No analytics events to process.");
+            $this->info('No analytics events to process.');
         }
-        
+
         return 0;
     }
 }

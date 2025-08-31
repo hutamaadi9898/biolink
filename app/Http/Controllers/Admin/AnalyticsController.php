@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Analytics;
 use App\Models\Link;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Carbon\Carbon;
 
 class AnalyticsController extends Controller
 {
@@ -121,8 +121,8 @@ class AnalyticsController extends Controller
             ->get();
 
         if ($validated['format'] === 'csv') {
-            $filename = 'analytics_' . $start->format('Y-m-d') . '_to_' . $end->format('Y-m-d') . '.csv';
-            
+            $filename = 'analytics_'.$start->format('Y-m-d').'_to_'.$end->format('Y-m-d').'.csv';
+
             $headers = [
                 'Content-type' => 'text/csv',
                 'Content-Disposition' => "attachment; filename={$filename}",
@@ -130,13 +130,13 @@ class AnalyticsController extends Controller
 
             $callback = function () use ($analytics) {
                 $file = fopen('php://output', 'w');
-                
+
                 // Header row
                 fputcsv($file, [
-                    'ID', 'Event Type', 'Event Data', 'User ID', 'IP Address', 'User Agent', 
-                    'Referrer', 'Country', 'City', 'Device Type', 'Browser', 'OS', 'Occurred At', 'Created At'
+                    'ID', 'Event Type', 'Event Data', 'User ID', 'IP Address', 'User Agent',
+                    'Referrer', 'Country', 'City', 'Device Type', 'Browser', 'OS', 'Occurred At', 'Created At',
                 ]);
-                
+
                 foreach ($analytics as $analytic) {
                     fputcsv($file, [
                         $analytic->id,
@@ -155,15 +155,15 @@ class AnalyticsController extends Controller
                         $analytic->created_at,
                     ]);
                 }
-                
+
                 fclose($file);
             };
 
             return response()->stream($callback, 200, $headers);
         } else {
             // JSON format
-            $filename = 'analytics_' . $start->format('Y-m-d') . '_to_' . $end->format('Y-m-d') . '.json';
-            
+            $filename = 'analytics_'.$start->format('Y-m-d').'_to_'.$end->format('Y-m-d').'.json';
+
             return response()->json($analytics, 200, [
                 'Content-Disposition' => "attachment; filename={$filename}",
             ]);

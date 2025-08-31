@@ -24,7 +24,7 @@ describe('Welcome Page', function () {
 
     it('shows different content for authenticated users', function () {
         $user = User::factory()->create();
-        
+
         $this->actingAs($user);
 
         $page = visit('/');

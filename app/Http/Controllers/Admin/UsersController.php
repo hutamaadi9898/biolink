@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Illuminate\Validation\Rule;
+use Inertia\Inertia;
 
 class UsersController extends Controller
 {
@@ -22,8 +22,8 @@ class UsersController extends Controller
             $search = $request->get('search');
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('username', 'like', "%{$search}%");
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('username', 'like', "%{$search}%");
             });
         }
 
@@ -66,7 +66,7 @@ class UsersController extends Controller
             'links.analytics',
             'portfolios',
             'analytics',
-            'userThemes.theme'
+            'userThemes.theme',
         ]);
 
         $user->loadCount(['links', 'portfolios']);
@@ -92,8 +92,8 @@ class UsersController extends Controller
         ]);
 
         if ($request->has('email_verified_at')) {
-            $validated['email_verified_at'] = $request->filled('email_verified_at') 
-                ? now() 
+            $validated['email_verified_at'] = $request->filled('email_verified_at')
+                ? now()
                 : null;
         }
 
@@ -134,9 +134,10 @@ class UsersController extends Controller
             return redirect()->back()->withErrors(['error' => 'Cannot remove admin status from the last admin user.']);
         }
 
-        $user->update(['is_admin' => !$user->is_admin]);
+        $user->update(['is_admin' => ! $user->is_admin]);
 
         $status = $user->is_admin ? 'granted' : 'removed';
+
         return redirect()->back()->with('success', "Admin privileges {$status} successfully.");
     }
 
@@ -150,6 +151,7 @@ class UsersController extends Controller
         ]);
 
         $status = $user->email_verified_at ? 'verified' : 'unverified';
+
         return redirect()->back()->with('success', "User email {$status} successfully.");
     }
 
@@ -160,7 +162,7 @@ class UsersController extends Controller
     {
         // Store original admin user ID in session
         session(['impersonate_admin_id' => auth()->id()]);
-        
+
         // Login as the selected user
         auth()->login($user);
 
@@ -173,13 +175,13 @@ class UsersController extends Controller
     public function stopImpersonating()
     {
         $adminId = session('impersonate_admin_id');
-        
-        if (!$adminId) {
+
+        if (! $adminId) {
             return redirect()->route('admin.dashboard');
         }
 
         $admin = User::find($adminId);
-        
+
         if ($admin) {
             auth()->login($admin);
             session()->forget('impersonate_admin_id');

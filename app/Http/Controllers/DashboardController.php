@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StorePortfolioRequest;
+use App\Http\Requests\UpdatePortfolioRequest;
 use App\Models\Analytics;
 use App\Models\Profile;
 use App\Models\Theme;
-use App\Http\Requests\StorePortfolioRequest;
-use App\Http\Requests\UpdatePortfolioRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
@@ -19,21 +19,21 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        
+
         // Get or create profile with unique slug handling
         $profile = $user->profile;
-        
-        if (!$profile) {
-            $baseSlug = $user->username ?? 'user-' . $user->id;
+
+        if (! $profile) {
+            $baseSlug = $user->username ?? 'user-'.$user->id;
             $slug = $baseSlug;
             $counter = 1;
-            
+
             // Ensure slug is unique
             while (Profile::where('slug', $slug)->exists()) {
-                $slug = $baseSlug . '-' . $counter;
+                $slug = $baseSlug.'-'.$counter;
                 $counter++;
             }
-            
+
             $profile = $user->profile()->create([
                 'slug' => $slug,
                 'display_name' => $user->name,
@@ -96,7 +96,7 @@ class DashboardController extends Controller
     public function updateProfile(Request $request)
     {
         $user = $request->user();
-        
+
         $validated = $request->validate([
             'display_name' => 'required|string|max:255',
             'bio' => 'nullable|string|max:1000',
@@ -109,18 +109,18 @@ class DashboardController extends Controller
         ]);
 
         $profile = $user->profile;
-        
-        if (!$profile) {
-            $baseSlug = $user->username ?? 'user-' . $user->id;
+
+        if (! $profile) {
+            $baseSlug = $user->username ?? 'user-'.$user->id;
             $slug = $baseSlug;
             $counter = 1;
-            
+
             // Ensure slug is unique
             while (Profile::where('slug', $slug)->exists()) {
-                $slug = $baseSlug . '-' . $counter;
+                $slug = $baseSlug.'-'.$counter;
                 $counter++;
             }
-            
+
             $validated['slug'] = $slug;
             $profile = $user->profile()->create($validated);
         } else {
@@ -158,7 +158,7 @@ class DashboardController extends Controller
         }
 
         // Set order if not provided
-        if (!isset($validated['order'])) {
+        if (! isset($validated['order'])) {
             $validated['order'] = $user->portfolios()->max('order') + 1;
         }
 
@@ -186,7 +186,7 @@ class DashboardController extends Controller
             if ($portfolio->image) {
                 Storage::disk('public')->delete($portfolio->image);
             }
-            
+
             $path = $request->file('image')->store('portfolio', 'public');
             $validated['image'] = $path;
         }
@@ -223,10 +223,10 @@ class DashboardController extends Controller
     public function themes(Request $request)
     {
         $user = $request->user();
-        
+
         $freeThemes = Theme::active()->free()->orderBy('sort_order')->get();
         $premiumThemes = Theme::active()->premium()->orderBy('sort_order')->get();
-        
+
         $currentTheme = $user->activeTheme?->theme;
 
         return Inertia::render('Dashboard/Themes', [
@@ -245,7 +245,7 @@ class DashboardController extends Controller
         $user = $request->user();
 
         // Check if theme is available for user
-        if (!$theme->isAvailableForUser($user)) {
+        if (! $theme->isAvailableForUser($user)) {
             return back()->with('error', 'Tema ini hanya tersedia untuk pengguna Pro.');
         }
 
@@ -267,8 +267,8 @@ class DashboardController extends Controller
     public function customizeTheme(Request $request)
     {
         $user = $request->user();
-        
-        if (!$user->isPro()) {
+
+        if (! $user->isPro()) {
             return back()->with('error', 'Kustomisasi tema hanya tersedia untuk pengguna Pro.');
         }
 
@@ -277,8 +277,8 @@ class DashboardController extends Controller
         ]);
 
         $activeTheme = $user->activeTheme;
-        
-        if (!$activeTheme) {
+
+        if (! $activeTheme) {
             return back()->with('error', 'Tidak ada tema yang aktif.');
         }
 

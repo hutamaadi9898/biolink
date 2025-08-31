@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Profile extends Model
 {
@@ -48,7 +48,7 @@ class Profile extends Model
      */
     public function getUrlAttribute(): string
     {
-        return url('/' . $this->slug);
+        return url('/'.$this->slug);
     }
 
     /**

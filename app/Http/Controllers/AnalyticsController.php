@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Analytics;
-use Inertia\Inertia;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AnalyticsController extends Controller
 {
@@ -16,67 +16,67 @@ class AnalyticsController extends Controller
     {
         $user = $request->user();
         $period = $request->get('period', '7days');
-        
+
         // Get date range based on period
         $dateRange = $this->getDateRange($period);
-        
+
         // Get analytics data for user
         $analytics = Analytics::where('user_id', $user->id)
             ->whereBetween('occurred_at', $dateRange)
             ->get();
-            
+
         // Calculate stats
         $total_views = $analytics->where('event_type', 'profile_view')->count();
         $total_clicks = $analytics->where('event_type', 'link_click')->count();
         $total_countries = $analytics->whereNotNull('country')->pluck('country')->unique()->count();
-        
+
         // Get daily breakdown
-        $daily_breakdown = $analytics->groupBy(function($item) {
+        $daily_breakdown = $analytics->groupBy(function ($item) {
             return $item->occurred_at->format('Y-m-d');
-        })->map(function($items, $date) {
+        })->map(function ($items, $date) {
             return [
                 'date' => $date,
                 'views' => $items->where('event_type', 'profile_view')->count(),
                 'clicks' => $items->where('event_type', 'link_click')->count(),
             ];
         })->values();
-        
+
         // Get top countries
         $top_countries = $analytics->whereNotNull('country')
             ->pluck('country')
             ->countBy()
-            ->map(function($count, $country) {
+            ->map(function ($count, $country) {
                 return [
                     'country' => $country,
-                    'count' => $count
+                    'count' => $count,
                 ];
             })
             ->sortByDesc('count')
             ->take(10)
             ->values();
-            
+
         // Get top devices
         $top_devices = $analytics->whereNotNull('device_type')
             ->pluck('device_type')
             ->countBy()
-            ->map(function($count, $device) {
+            ->map(function ($count, $device) {
                 return [
                     'device' => $device,
-                    'count' => $count
+                    'count' => $count,
                 ];
             })
             ->sortByDesc('count')
             ->take(10)
             ->values();
-            
+
         // Get top browsers
         $top_browsers = $analytics->whereNotNull('browser')
             ->pluck('browser')
             ->countBy()
-            ->map(function($count, $browser) {
+            ->map(function ($count, $browser) {
                 return [
                     'browser' => $browser,
-                    'count' => $count
+                    'count' => $count,
                 ];
             })
             ->sortByDesc('count')
@@ -86,21 +86,21 @@ class AnalyticsController extends Controller
         // Get top links with click data
         $topLinks = $analytics->where('event_type', 'link_click')
             ->groupBy('event_data')
-            ->map(function($items) use ($user) {
+            ->map(function ($items) use ($user) {
                 $linkId = str_replace('"', '', $items->first()->event_data ?? '');
-                
+
                 // Only process if linkId is numeric (valid ID)
-                if (!is_numeric($linkId)) {
+                if (! is_numeric($linkId)) {
                     return null;
                 }
-                
+
                 $link = $user->links()->find($linkId);
-                
+
                 // Skip if link not found
-                if (!$link) {
+                if (! $link) {
                     return null;
                 }
-                
+
                 return [
                     'id' => $linkId,
                     'title' => $link->title ?? 'Unknown Link',
@@ -131,7 +131,7 @@ class AnalyticsController extends Controller
             'period' => $period,
         ]);
     }
-    
+
     /**
      * Get analytics data via API
      */
@@ -139,43 +139,43 @@ class AnalyticsController extends Controller
     {
         $user = $request->user();
         $period = $request->get('period', '7days');
-        
+
         $dateRange = $this->getDateRange($period);
-        
+
         $analytics = Analytics::where('user_id', $user->id)
             ->whereBetween('occurred_at', $dateRange)
             ->get();
-            
+
         // Calculate stats
         $total_views = $analytics->where('event_type', 'profile_view')->count();
         $total_clicks = $analytics->where('event_type', 'link_click')->count();
         $total_countries = $analytics->whereNotNull('country')->pluck('country')->unique()->count();
-        
+
         // Get daily breakdown
-        $daily_breakdown = $analytics->groupBy(function($item) {
+        $daily_breakdown = $analytics->groupBy(function ($item) {
             return $item->occurred_at->format('Y-m-d');
-        })->map(function($items, $date) {
+        })->map(function ($items, $date) {
             return [
                 'date' => $date,
                 'views' => $items->where('event_type', 'profile_view')->count(),
                 'clicks' => $items->where('event_type', 'link_click')->count(),
             ];
         })->values();
-        
+
         // Get top countries
         $top_countries = $analytics->whereNotNull('country')
             ->pluck('country')
             ->countBy()
-            ->map(function($count, $country) {
+            ->map(function ($count, $country) {
                 return [
                     'country' => $country,
-                    'count' => $count
+                    'count' => $count,
                 ];
             })
             ->sortByDesc('count')
             ->take(10)
             ->values();
-            
+
         return response()->json([
             'total_views' => $total_views,
             'total_clicks' => $total_clicks,
@@ -184,7 +184,7 @@ class AnalyticsController extends Controller
             'top_countries' => $top_countries,
         ]);
     }
-    
+
     /**
      * Get date range based on period
      */

@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Analytics;
 use App\Models\Link;
 use App\Models\Portfolio;
-use App\Models\Analytics;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
+use App\Models\User;
 use Carbon\Carbon;
+use Inertia\Inertia;
 
 class AdminController extends Controller
 {

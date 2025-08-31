@@ -22,12 +22,12 @@ class LinksController extends Controller
             $search = $request->get('search');
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('url', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%")
-                  ->orWhereHas('user', function ($userQuery) use ($search) {
-                      $userQuery->where('name', 'like', "%{$search}%")
-                               ->orWhere('email', 'like', "%{$search}%");
-                  });
+                    ->orWhere('url', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%");
+                    });
             });
         }
 
@@ -44,7 +44,7 @@ class LinksController extends Controller
         // Sort functionality
         $sortBy = $request->get('sort_by', 'created_at');
         $sortDirection = $request->get('sort_direction', 'desc');
-        
+
         if ($sortBy === 'clicks') {
             $query->orderBy('click_count', $sortDirection);
         } else {
@@ -115,9 +115,10 @@ class LinksController extends Controller
      */
     public function toggleVisibility(Link $link)
     {
-        $link->update(['is_active' => !$link->is_active]);
+        $link->update(['is_active' => ! $link->is_active]);
 
         $status = $link->is_active ? 'activated' : 'deactivated';
+
         return redirect()->back()->with('success', "Link {$status} successfully.");
     }
 
@@ -138,14 +139,17 @@ class LinksController extends Controller
             case 'delete':
                 $count = $links->count();
                 $links->delete();
+
                 return redirect()->back()->with('success', "{$count} links deleted successfully.");
 
             case 'deactivate':
                 $count = $links->update(['is_active' => false]);
+
                 return redirect()->back()->with('success', "{$count} links deactivated successfully.");
 
             case 'activate':
                 $count = $links->update(['is_active' => true]);
+
                 return redirect()->back()->with('success', "{$count} links activated successfully.");
         }
     }

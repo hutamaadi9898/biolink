@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\User;
 use App\Models\Portfolio;
+use App\Models\User;
 
 describe('Portfolio Management', function () {
     beforeEach(function () {

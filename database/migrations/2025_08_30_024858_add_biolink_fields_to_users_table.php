@@ -29,11 +29,11 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn([
                 'username',
-                'role', 
+                'role',
                 'pro_expires_at',
                 'provider',
                 'provider_id',
-                'provider_data'
+                'provider_data',
             ]);
         });
     }

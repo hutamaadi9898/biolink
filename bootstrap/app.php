@@ -16,13 +16,13 @@ return Application::configure(basePath: dirname(__DIR__))
             // Load admin routes first (before web.php catch-all routes)
             Route::middleware('web')
                 ->group(base_path('routes/admin.php'));
-                
+
             Route::middleware('web')
                 ->group(base_path('routes/auth.php'));
-            
+
             Route::middleware('web')
                 ->group(base_path('routes/settings.php'));
-                
+
             // Load web routes last (contains catch-all routes)
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));

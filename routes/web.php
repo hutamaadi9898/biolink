@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LinkController;
-use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // Public routes
@@ -19,13 +19,13 @@ require __DIR__.'/settings.php';
 // Protected routes - must come before catch-all routes
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
+
     // Profile management
     Route::prefix('dashboard/profile')->name('dashboard.profile.')->group(function () {
         Route::get('/', [DashboardController::class, 'profileSettings'])->name('index');
         Route::put('/', [DashboardController::class, 'updateProfile'])->name('update');
     });
-    
+
     // Link management
     Route::prefix('dashboard/links')->name('dashboard.links.')->group(function () {
         Route::get('/', [LinkController::class, 'index'])->name('index');
@@ -35,7 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('/{link}/toggle', [LinkController::class, 'toggle'])->name('toggle');
         Route::post('/reorder', [LinkController::class, 'reorder'])->name('reorder');
     });
-    
+
     // Portfolio management
     Route::prefix('dashboard/portfolio')->name('dashboard.portfolio.')->group(function () {
         Route::get('/', [DashboardController::class, 'portfolio'])->name('index');
@@ -43,13 +43,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/{portfolio}', [DashboardController::class, 'updatePortfolio'])->name('update');
         Route::delete('/{portfolio}', [DashboardController::class, 'destroyPortfolio'])->name('destroy');
     });
-    
+
     // Analytics
     Route::prefix('dashboard/analytics')->name('dashboard.analytics.')->group(function () {
         Route::get('/', [AnalyticsController::class, 'index'])->name('index');
         Route::get('/data', [AnalyticsController::class, 'getData'])->name('data');
     });
-    
+
     // Theme management
     Route::prefix('dashboard/themes')->name('dashboard.themes.')->group(function () {
         Route::get('/', [DashboardController::class, 'themes'])->name('index');

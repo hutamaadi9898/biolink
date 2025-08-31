@@ -4,27 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Link;
 use App\Services\EmbedService;
-use Illuminate\Http\Re    public function destroy(Link $link)
-    {
-        // Ensure the link belongs to the authenticated user
-        if ($link->user_id !== auth()->id()) {
-            abort(403);
-        }
-
-        // Delete image file if exists
-        if ($link->image) {
-            Storage::disk('public')->delete($link->image);
-        }
-
-        $link->delete();
-
-        return back()->with('success', 'Link berhasil dihapus!');
-    }Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class LinkController extends Controller
 {
+    public function __construct(protected EmbedService $embedService)
+    {
+        //
+    }
+
     /**
      * Display a listing of the user's links.
      */
@@ -98,7 +89,7 @@ class LinkController extends Controller
             if ($link->image) {
                 Storage::disk('public')->delete($link->image);
             }
-            
+
             $path = $request->file('image')->store('links', 'public');
             $validated['image'] = $path;
         }
@@ -133,9 +124,14 @@ class LinkController extends Controller
             abort(403);
         }
 
+        // Delete image file if exists
+        if ($link->image) {
+            Storage::disk('public')->delete($link->image);
+        }
+
         $link->delete();
 
-        return redirect()->back()->with('success', 'Link berhasil dihapus!');
+        return back()->with('success', 'Link berhasil dihapus!');
     }
 
     /**
@@ -168,10 +164,10 @@ class LinkController extends Controller
             abort(403);
         }
 
-        $link->update(['is_active' => !$link->is_active]);
+        $link->update(['is_active' => ! $link->is_active]);
 
         $status = $link->is_active ? 'diaktifkan' : 'dinonaktifkan';
-        
+
         return redirect()->back()->with('success', "Link berhasil {$status}!");
     }
 }

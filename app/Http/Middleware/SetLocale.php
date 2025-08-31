@@ -18,11 +18,11 @@ class SetLocale
     {
         // Check if user has locale preference in session
         $locale = $request->session()->get('locale');
-        
+
         // If not in session, check browser language
-        if (!$locale) {
+        if (! $locale) {
             $acceptLanguage = $request->header('Accept-Language');
-            
+
             // Check if Indonesian is preferred
             if ($acceptLanguage && str_contains($acceptLanguage, 'id')) {
                 $locale = 'id';
@@ -30,15 +30,15 @@ class SetLocale
                 $locale = config('app.locale', 'id');
             }
         }
-        
+
         // Ensure we only use supported locales
         $supportedLocales = ['id', 'en'];
-        if (!in_array($locale, $supportedLocales)) {
+        if (! in_array($locale, $supportedLocales)) {
             $locale = 'id';
         }
-        
+
         App::setLocale($locale);
-        
+
         return $next($request);
     }
 }
