@@ -15,6 +15,7 @@ class Link extends Model
         'user_id',
         'title',
         'url',
+        'description',
         'type',
         'order',
         'is_active',

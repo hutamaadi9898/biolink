@@ -208,12 +208,12 @@
 <script lang="ts">
 import { reactive, ref } from 'vue';
 
-const props = defineProps({
-    modelValue: {
-        type: Object,
-        default: () => ({}),
-    },
-});
+// const props = defineProps({
+//     modelValue: {
+//         type: Object,
+//         default: () => ({}),
+//     },
+// });
 
 const emit = defineEmits(['update:modelValue', 'selected']);
 
@@ -267,31 +267,31 @@ const socialMediaData = {
     },
 };
 
-const selectSocialMedia = (platform) => {
-    const data = socialMediaData[platform];
-    emit('selected', {
-        type: 'social',
-        title: data.title,
-        url: '',
-        platform: platform,
-        icon: data.icon,
-        placeholder: data.placeholder,
-    });
-};
+// const selectSocialMedia = (platform) => {
+//     const data = socialMediaData[platform];
+//     emit('selected', {
+//         type: 'social',
+//         title: data.title,
+//         url: '',
+//         platform: platform,
+//         icon: data.icon,
+//         placeholder: data.placeholder,
+//     });
+// };
 
-const addCustomSocialMedia = () => {
-    if (customForm.title && customForm.url) {
-        emit('selected', {
-            type: 'social',
-            title: customForm.title,
-            url: customForm.url,
-            platform: 'custom',
-            icon: '🔗',
-        });
-        resetCustomForm();
-        showCustomForm.value = false;
-    }
-};
+// const addCustomSocialMedia = () => {
+//     if (customForm.title && customForm.url) {
+//         emit('selected', {
+//             type: 'social',
+//             title: customForm.title,
+//             url: customForm.url,
+//             platform: 'custom',
+//             icon: '🔗',
+//         });
+//         resetCustomForm();
+//         showCustomForm.value = false;
+//     }
+// };
 
 const resetCustomForm = () => {
     customForm.title = '';

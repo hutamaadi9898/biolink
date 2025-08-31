@@ -194,9 +194,9 @@ const closeUserMenu = () => {
     showUserMenu.value = false;
 };
 
-const toggleMobileMenu = () => {
-    showMobileMenu.value = !showMobileMenu.value;
-};
+// const toggleMobileMenu = () => {
+//     showMobileMenu.value = !showMobileMenu.value;
+// };
 
 // Click outside directive
 const vClickOutside = {

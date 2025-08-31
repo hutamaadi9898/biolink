@@ -37,6 +37,7 @@ class LinkController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'url' => 'required|url|max:500',
+            'description' => 'nullable|string|max:500',
             'type' => 'required|string|in:social,custom',
             'show_as_embed' => 'boolean',
             'image' => 'nullable|image|max:5120', // 5MB max
@@ -77,6 +78,7 @@ class LinkController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'url' => 'required|url|max:500',
+            'description' => 'nullable|string|max:500',
             'type' => 'required|string|in:social,custom',
             'show_as_embed' => 'boolean',
             'image' => 'nullable|image|max:5120', // 5MB max
